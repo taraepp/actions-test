@@ -1,0 +1,14 @@
+name: Shell commands
+on: [push, pull_request] # can be single or an [array]
+# an object with a key for each job
+jobs:
+  run-shell-command:
+    # specify OS
+    runs-on: ubuntu-latest
+    steps: # array of objects for each step
+      - name: echo a string
+        run: echo "Hello Tara"
+      - name: multiline script
+        run: |
+          node -v
+          npm -v

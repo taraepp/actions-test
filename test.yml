@@ -1,0 +1,42 @@
+name: Tara
+city: Saskatoon
+numKey: 15
+boolKey: true
+arrayKey:
+    - val1
+    - val2
+    - val3
+objectKey:
+    - name: obj
+      key1: false
+      key2: 25
+      key3:
+          - 1
+          - 2
+          - 3
+          - 4
+objectArray:
+    - name: obj1
+      key1: false
+      key2: 25
+      key3:
+          - 1
+          - 2
+          - 3
+          - 4
+    - name: obj2
+      key1: false
+      key2: 25
+      key3:
+          - 1
+          - 2
+          - 3
+          - 4
+    - name: obj3
+      key1: false
+      key2: 25
+      key3:
+          - 1
+          - 2
+          - 3
+          - 4
