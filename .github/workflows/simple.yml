@@ -13,6 +13,8 @@ jobs:
   run-shell-command:
     # specify OS
     runs-on: ubuntu-latest
+    # specify jobs that should finish successfully first (dependencies)
+    needs: ["run-windows-command"]
     steps: # array of objects for each step
       - name: echo a string
         run: echo "Hello Tara"
