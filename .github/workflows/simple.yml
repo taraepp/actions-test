@@ -7,8 +7,14 @@ jobs:
     runs-on: ubuntu-latest
     steps: # array of objects for each step
       - name: echo a string
-        run: eccho "Hello Tara"
+        run: echo "Hello Tara"
       - name: multiline script
         run: |
           node -v
           npm -v
+      # using a different shell:
+      - name: python command
+        run: |
+          import platform
+          print(platform.processor())
+        shell: python
