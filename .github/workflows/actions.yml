@@ -8,10 +8,14 @@ jobs:
       - name: List Files
         run: |
           pwd
-          ls
+          ls -a
+          echo $GITHUB_SHA
+          echo $GITHUB_REPOSITORY
+          echo $GITHUB_WORKSPACE
+          echo "${{ github.token }}"
       # to clone the repo, use predefined action made by GH
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout
       - name: List files after Checkout
         run: |
           pwd
