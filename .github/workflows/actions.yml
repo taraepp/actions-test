@@ -9,6 +9,13 @@ jobs:
         run: |
           pwd
           ls
+      # to clone the repo, use predefined action made by GH
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: List files after Checkout
+        run: |
+          pwd
+          ls -a
       - name: Simple JS Action
         id: greet
         # uses takes a reference to an action
