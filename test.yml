@@ -2,6 +2,7 @@ name: Tara
 city: Saskatoon
 numKey: 15
 boolKey: true
+a-change: false
 arrayKey:
     - val1
     - val2
