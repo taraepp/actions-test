@@ -19,6 +19,8 @@ jobs:
   run-github-actions:
     runs-on: ubuntu-latest
     steps:
+      - name: client payload from API
+        run: echo ${{ github.event.client_payload.env }}
       - name: List Files
       # sha: the commit, ref: the branch. For a PR, the ref will be the result of merging 'new branch' into 'main branch', so that you can test against it properly
         run: |
