@@ -1,7 +1,17 @@
 name: Actions Workflow
 # 'on' can also be an object
 on: 
-  push:
+  # external event: repository_dispatch
+  repository_dispatch:
+    # these are custom types that you can put in the request body json obj as event_type
+    types: [postman]
+  #push:
+  #schedule:
+  #minutes, hours, day of month, month, day of week- always UTC
+   #- cron: "* * * * *" # every minute
+   # - cron: "1,2 * * * *" # at minute 1 and 2
+   #- cron: "1-3 * * * *" # at minute 1, 2, and 3...
+   #- cron: "0/15 * * * *" # starting at minute 0, every 15 minutes
   pull_request:
     types: [closed, assigned, opened, reopened]
 
@@ -10,10 +20,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: List Files
+      # sha: the commit, ref: the branch. For a PR, the ref will be the result of merging 'new branch' into 'main branch', so that you can test against it properly
         run: |
           pwd
           ls -a
           echo $GITHUB_SHA
+          echo $GITHUB_REF
           echo $GITHUB_REPOSITORY
           echo $GITHUB_WORKSPACE
           echo "${{ github.token }}"
