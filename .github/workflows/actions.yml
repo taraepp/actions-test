@@ -5,18 +5,18 @@ on:
   repository_dispatch:
     # these are custom types that you can put in the request body json obj as event_type
     types: [postman]
-  push:
-    branches: # can also specify branch for pr, where it would be triggered when request to merge into that branch
+  #push:
+    #branches: # can also specify branch for pr, where it would be triggered when request to merge into that branch
       # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet
-      - 'feature-*' # pattern match
-      - '!develop' #can ignore with NOT branch (!), should be put at end
+      #- 'feature-*' # pattern match
+     # - '!develop' #can ignore with NOT branch (!), should be put at end
     #branches-ignore: cannot use branches and branches-ignore at the same time
       #- main
-    tags: # can also tags-ignore, same as branches
-      - v1.*
-    paths: # or paths-ignore
-      - '**.js' #only run if pushing js files (and only js files)
-      - '!filename.js'
+    #tags: # can also tags-ignore, same as branches
+      #- v1.*
+    #paths: # or paths-ignore
+      #- '**.js' #only run if pushing js files (and only js files)
+      #- '!filename.js'
       #- 'docs/**' filter by location
   #schedule:
   #minutes, hours, day of month, month, day of week- always UTC
