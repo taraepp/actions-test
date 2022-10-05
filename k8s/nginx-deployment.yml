@@ -29,6 +29,10 @@ spec:
           image: nginx:1.23.1
           ports:
             - containerPort: 80
-          #env:
-          #  - name: MESSAGE
-           #   value: 'hi tara'
+          env:
+            - name: MESSAGE
+              valueFrom:
+                secretKeyRef:
+                  name: nginx-demo-message
+                  key: message
+                  optional: false
