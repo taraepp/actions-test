@@ -3,14 +3,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx
+  name: tara-nginx
+  namespace: tara
 spec:
   selector:
-    app: nginx
+    app: tara-nginx
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
   # these are the available types
-  #type: ClusterIp, LoadBalancer, NodePort
-  type: ClusterIp
+  #type: ClusterIP, LoadBalancer, NodePort
+  type: ClusterIP

@@ -3,35 +3,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx
+  name: tara-nginx
   namespace: tara
   labels:
-    app: nginx
+    app: tara-nginx
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nginx
+      app: tara-nginx
   template:
     metadata:
-      name: nginx
+      name: tara-nginx
       labels:
-        app: nginx
+        app: tara-nginx
     spec:
       containers:
-        - name: nginx
+        - name: tara-nginx
           # image is the important part
           # milestones is the namespace
           #first bit is repo, 'latest' is tag
           #image: eydscasandbox.azurecr.io/milestones/custom-nginx:latest
           # not customized, pulled from dockerhub which is the default for unspecified. Try push and deploy this
+          #eydscasandbox.azurecr.io/tara/k8s-nginx:latest
           image: nginx:1.23.1
           ports:
             - containerPort: 80
-          env:
-            - name: MESSAGE
-              valueFrom:
-                secretKeyRef:
-                  name: nginx-message
-                  key: message
-                  optional: false
+          #env:
+          #  - name: MESSAGE
+           #   value: 'hi tara'
