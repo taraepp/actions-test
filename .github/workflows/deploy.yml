@@ -1,9 +1,9 @@
 name: Deploy
-on:
-  push:
-    tags: 
+on: [push]
+  #push:
+    #tags: 
     # Typically for tag-based deployment you would have one tag per environment, e.g. dev/test/prod
-      - dev
+     # - dev
 
 env:
   # Please change this to the name of your kubernetes namespace
