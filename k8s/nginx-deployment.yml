@@ -1,0 +1,37 @@
+# define deployment, create pods, this is pretty standard formula
+# needs a name, chelsea likes to add namespace in case of name conflicts
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: tara
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      name: nginx
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          # image is the important part
+          # milestones is the namespace
+          #first bit is repo, 'latest' is tag
+          #image: eydscasandbox.azurecr.io/milestones/custom-nginx:latest
+          # not customized, pulled from dockerhub which is the default for unspecified. Try push and deploy this
+          image: nginx:1.23.1
+          ports:
+            - containerPort: 80
+          env:
+            - name: MESSAGE
+              valueFrom:
+                secretKeyRef:
+                  name: nginx-message
+                  key: message
+                  optional: false

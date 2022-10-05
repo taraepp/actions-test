@@ -1,0 +1,16 @@
+# how we connect to the pods, connectiing to the nginx deployment through the defined ports
+# by default built as cluster ip
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  # these are the available types
+  #type: ClusterIp, LoadBalancer, NodePort
+  type: ClusterIp

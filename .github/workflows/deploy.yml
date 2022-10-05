@@ -1,0 +1,38 @@
+name: Deploy
+on:
+  push:
+    tags: 
+    # Typically for tag-based deployment you would have one tag per environment, e.g. dev/test/prod
+      - dev
+
+env:
+  # Please change this to the name of your kubernetes namespace
+  NAMESPACE: ${{ secrets.NAMESPACE }}
+
+jobs:
+  build-and-deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout Repo
+
+      - uses: azure/k8s-set-context@v2
+        name: Set-up kubernetes connection
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+      - name: Login to Azure Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: eydscasandbox.azurecr.io
+          username: eydscasandbox
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and deploy nginx image
+        run: make nginx-push
+
+      - name: Apply k8s config
+        run: make apply
