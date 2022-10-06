@@ -15,7 +15,9 @@ jobs:
   conditionals:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
-
+    steps:
+      - name: push event
+        run: echo "The triggering event was a push"
 
   dump_contexts_to_log:
     timeout-minutes: 360
