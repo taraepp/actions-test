@@ -18,6 +18,7 @@ jobs:
 
 
   dump_contexts_to_log:
+    timeout-minutes: 360
     runs-on: ubuntu-latest
     steps:
       - name: Dump GitHub context
@@ -25,6 +26,7 @@ jobs:
         run: echo '${{ toJSON(github) }}'
       - name: Dump job context
         run: eccho '${{ toJSON(job) }}'
+        continue-on-error: true
       - name: Dump steps context
       # can use job status function to force jobs to run after failed steps
         if: failure()
