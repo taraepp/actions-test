@@ -1,5 +1,5 @@
 name: Context testing
-on: push
+on: [push, pull_request]
 
 jobs:
   functions:
@@ -11,6 +11,11 @@ jobs:
           echo ${{ startsWith('hello', 'he') }}
           echo ${{ endsWith('hello', 'lo') }}
           echo ${{ format('Hello {0} {1} {0}', 'World', '!') }}
+  
+  conditionals:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
 
   dump_contexts_to_log:
     runs-on: ubuntu-latest
@@ -19,10 +24,13 @@ jobs:
         id: github_context_step
         run: echo '${{ toJSON(github) }}'
       - name: Dump job context
-        run: echo '${{ toJSON(job) }}'
+        run: eccho '${{ toJSON(job) }}'
       - name: Dump steps context
+      # can use job status function to force jobs to run after failed steps
+        if: failure()
         run: echo '${{ toJSON(steps) }}'
       - name: Dump runner context
+        if: always()
         run: echo '${{ toJSON(runner) }}'
       - name: Dump strategy context
         run: echo '${{ toJSON(strategy) }}'
