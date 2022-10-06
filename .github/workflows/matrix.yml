@@ -9,12 +9,24 @@ jobs:
         node_version: [6, 8, 10]
         # now we have a 3x3 matrix- job will run 9x with each n_v and os combination
         os: [macos-latest, ubuntu-latest, windows-latest]
+        # fine-tune configurations
+        exlude:
+          - os: ubuntu-latest
+            node_version: 6
+          - os: macos-latest
+            node_version: [6, 8]
+        include:
+          - os: macos-latest
+            node_version: 4
+            is_ubuntu_4: "true"
       # if f-f, means that if one job in matrix fails, all others will stop
       # if not f-f, each 3 jobs run independent of results of the other jobs, even if one fails
       #fail-fast: true
       # by default GH tries to run as many in parallel as possible (with 0?) but can limit
       #max-parallel: 2
     runs-on: ${{ matrix.os }}
+    env:
+      IS_UBUNTU_4: ${{matrix.is_ubuntu_4}}
     steps:
       - name: Log node version
         run: node -v
@@ -23,4 +35,6 @@ jobs:
         # reference matrix context
           node-version: ${{ matrix.node_version }}
       - name: Log node version again
-        run: node -v
+        run: | 
+          node -v
+          echo $IS_UBUNTU_4
