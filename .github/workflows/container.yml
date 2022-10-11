@@ -1,0 +1,22 @@
+name: Container
+on: push
+
+jobs:
+  node-docker:
+    runs-on: ubuntu-latest
+    container: node:18.10-alpine3.15
+    # or can reference it as an object, like:
+    #container:
+    #  image: node:18.10-alpine3.15
+    #  ports: [80]
+    #  volumes: [my_docker_volume:/volume_mount] # map volumes in container to volumes in VM
+    # options for docker-run  
+    #  options: --cpus 1 
+    #  env:
+    #    varName: value
+    steps:
+      - name: Log node version
+        run: |
+          node -v
+          cat /etc/os-release
+      
