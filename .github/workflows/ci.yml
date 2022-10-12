@@ -1,0 +1,74 @@
+#ch 36
+name: CI
+on:
+  pull_request:
+    branches: [develop, main]
+  push: # push event will occur when PR accepted & merged
+    branches: [develop, main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use NodeJS version to match 
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with: 
+          path: ~/.npm # linux location
+          # to access it again later, can be static or dynamic key, we want new cache when new npm dependencies or diff os
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }} 
+          # if not find original key, can find older caches
+          restore-keys: |
+            ${{ runner.os }}-node- 
+      # install dependencies
+      - run: npm ci #similar to npm install, but more suitable for ci environments (https://docs.npmjs.com/cli/v8/commands/npm-ci)
+      - run: npm run format:check #TODO: the things before ch36, incl create this script
+      # run tests and generate coverage
+      - run: npm test --coverage
+        env:
+          ci: true
+      - name: Upload test coverage Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: code-coverage
+          path: coverage
+      - name: Build project
+        if: github.event_name == 'push'
+        run: npm run build
+      - name: Upload build folder
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v1
+        with:
+          name: build
+          path: build
+      - name: ZIP Assets
+        if: github.event_name == 'push' && github.ref == 'refs/head/main'
+        # can use ubuntu zipping cli tool
+        run: |
+          zip -r build.zip ./build
+          zip -r coverage.zip ./coverage
+      #- uses: actions/download-artifact don't need to do this, but it is possible
+      - name: Create a release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy to staging
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        #install and run simple deployment tool
+        run: npx surge --project ./build --domain silent-apparatus.surge.sh # TODO: Not a real domain
+        env:
+          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }} #cli command: 'surge token', surge whoami
+      - name: Deploy to production
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        #install and run simple deployment tool
+        run: npx surge --project ./build --domain silent-apparatus.surge.sh # TODO: Not a real domain
+        env:
+          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }} #cli command: 'surge token', surge whoami
+      
