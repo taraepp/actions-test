@@ -1,0 +1,12 @@
+version: '3'
+services: 
+  nginx:
+  # image here is just a name
+    image: taranginx
+    #container_name: nginx:latest
+    environment: 
+      MESSAGE: hello
+    build: 
+      context: './services/custom-nginx'
+    ports: 
+      - "3050:80"
